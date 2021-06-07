@@ -82,7 +82,7 @@ public class AdministratorController {
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		administratorService.insert(administrator);
-		return "administrator/login";
+		return "redirect:";
 	}
 
 	/////////////////////////////////////////////////////
@@ -112,6 +112,7 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		session.setAttribute("administratorName", administrator.getName());
 		return "forward:/employee/showList";
 	}
 
