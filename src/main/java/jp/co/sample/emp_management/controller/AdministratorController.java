@@ -72,7 +72,7 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
 
 		if (!form.getPassword().equals(form.getCheckPassword())) {
 			result.rejectValue("checkPassword", "xxxxx", new Object[] { 50000 }, "パスワードと一致しません");
