@@ -59,7 +59,7 @@ public class EmployeeService {
 	 * @param inName 検索したい入力された名前
 	 * @return 指定した文字が含まれている従業員のリスト
 	 */
-	public List<Employee> serchEmployeesByName(String inName) {
+	public List<Employee> showEmployeeByName(String inName) {
 		return employeeRepository.findByName(inName);
 	}
 }

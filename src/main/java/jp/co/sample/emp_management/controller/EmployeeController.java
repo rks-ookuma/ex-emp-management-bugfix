@@ -59,6 +59,29 @@ public class EmployeeController {
 		return "employee/list";
 	}
 
+	/**
+	 * 名前で曖昧検索した従業員を表示する.
+	 *
+	 * @param form  従業員を名前で曖昧検索する際に利用されるフォーム
+	 * @param model リクエストスコープ
+	 * @return 検索にヒットした従業員のリストが表示された従業員一覧画面、空もしくはヒットしなかった場合全件が表示された従業員一覧画面
+	 */
+	@RequestMapping("/serchEmployeeByName")
+	public String serchEmployeeByName(SerchEmployeeByNameForm form, Model model) {
+		if (form.getSerchName() == null) {
+			showList(model);
+		}
+		List<Employee> employeeList = employeeService.showEmployeeByName(form.getSerchName());
+		if (employeeList.size() == 0) {
+			model.addAttribute("notExistEmployee", "１件もありませんでした");
+			showList(model);
+		}
+
+		model.addAttribute("employeeList", employeeList);
+
+		return "employee/list";
+	}
+
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する
 	/////////////////////////////////////////////////////
