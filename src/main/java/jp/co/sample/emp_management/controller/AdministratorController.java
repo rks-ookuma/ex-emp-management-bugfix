@@ -72,9 +72,13 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
+			return "administrator/insert";
+		}
+		if (administratorService.checkDuplicationMail(form.getMailAddress())) {
+			model.addAttribute("duplicationMail", "そのメールアドレスは既に登録されています");
 			return "administrator/insert";
 		}
 
