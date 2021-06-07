@@ -89,6 +89,9 @@
 										<label th:if="${#fields.hasErrors('checkPassword')}" th:errors="*{checkPassword}" class="error-messages">
 											確認用パスワードを入力してください
 										</label>
+										<label th:if="${NotEqualPassword}" th:text="${NotEqualPassword}" class="error-messages">
+											パスワードと一致しません
+										</label>
 										<input type="password" name="checkPassword" id="checkPassword" class="form-control" placeholder="確認用password"
 											 th:field="*{checkPassword}" th:errorclass="error-input" value="xxxxxxxx">
 									</div>
