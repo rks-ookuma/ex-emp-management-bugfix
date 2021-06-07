@@ -82,6 +82,24 @@
 									</div>
 								</div>
 							</div>
+							<!-- 確認用パスワード -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="passwaord">
+											確認用パスワード:
+										</label>
+										<label th:if="${#fields.hasErrors('checkPassword')}" th:errors="*{checkPassword}" class="error-messages">
+											確認用パスワードを入力してください
+										</label>
+										<label th:if="${NotEqualPassword}" th:text="${NotEqualPassword}" class="error-messages">
+											パスワードと一致しません
+										</label>
+										<input type="password" name="checkPassword" id="checkPassword" class="form-control" placeholder="確認用password"
+											 th:field="*{checkPassword}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
 							<!-- 登録ボタン -->
 							<div class="form-group">
 								<div class="row">
