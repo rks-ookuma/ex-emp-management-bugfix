@@ -21,17 +21,20 @@ public class EmployeeService {
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
-	
+
 	/**
-	 * 従業員情報を全件取得します.
-	 * 
-	 * @return　従業員情報一覧
+	 * 従業員をページング形式で取得する.
+	 *
+	 * @param selectPage 指定したページ
+	 * @return 指定したページにおける従業員が入社日の降順に入ったリスト
 	 */
-	public List<Employee> showList() {
-		List<Employee> employeeList = employeeRepository.findAll();
+	public List<Employee> showList(int selectPage) {
+		int displayCount = 10;
+		int startIndex = selectPage * displayCount;
+		List<Employee> employeeList = employeeRepository.findLimited(startIndex, displayCount);
 		return employeeList;
 	}
-	
+
 	/**
 	 * 従業員情報を取得します.
 	 * 
@@ -43,7 +46,7 @@ public class EmployeeService {
 		Employee employee = employeeRepository.load(id);
 		return employee;
 	}
-	
+
 	/**
 	 * 従業員情報を更新します.
 	 * 

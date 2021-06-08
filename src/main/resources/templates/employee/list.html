@@ -89,7 +89,7 @@
 					</tbody>
 				</table>
 				<form action="list.html" th:object="${employeePageForm}">
-				<button name="page" value="*{selectPage}-1">&lt;</button> <input type="number" name="page" th:field="*{selectPage}"> / <span th:text="${pageLimit}">10 </span><button name="page" value="*{selectPage}-1">&gt;</button>
+				<button name="selectPage" value="*{selectPage}-1">&lt;</button> <input type="number" name="selectPage" th:field="*{selectPage}"> / <span th:text="${pageLimit}">10 </span><button name="selectPage" value="*{selectPage}-1">&gt;</button>
 				</form>
 
 <!-- ここから下を編集する必要はありません -->

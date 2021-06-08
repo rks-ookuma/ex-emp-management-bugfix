@@ -59,6 +59,23 @@ public class EmployeeRepository {
 	}
 
 	/**
+	 * 取得件数の制限付きで従業員一覧を取得する.
+	 *
+	 * @param startIndex 指定した番号から取得する
+	 * @param getCount   取得する件数
+	 * @return 指定した番号から指定した件数分、入社日の降順で並んだ従業員のリスト
+	 */
+	public List<Employee> findLimited(int startIndex, int getCount) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees"
+				+ " ORDER BY hire_date DESC LIMIT :getCount OFFSET :startIndex";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("getCount", getCount).addValue("startIndex",
+				startIndex);
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+
+		return employeeList;
+	}
+
+	/**
 	 * 主キーから従業員情報を取得します.
 	 * 
 	 * @param id 検索したい従業員ID
@@ -84,4 +101,5 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+
 }
