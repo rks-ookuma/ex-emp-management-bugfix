@@ -72,13 +72,17 @@ public class AdministratorController {
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
 
-		if (result.hasErrors()) {
-			return "administrator/insert";
-		}
+
+		if (!form.getPassword().equals(form.getCheckPassword())) {
+			result.rejectValue("checkPassword", "xxxxx", new Object[] { 50000 }, "パスワードと一致しません");
+
 		if (administratorService.checkDuplicationMail(form.getMailAddress())) {
-			model.addAttribute("duplicationMail", "そのメールアドレスは既に登録されています");
+			result.rejectValue("mailAddress", "xxxxx", new Object[] { 50000 }, "そのメールアドレスは既に登録されています");
+
+		}
+		if (result.hasErrors()) {
 			return "administrator/insert";
 		}
 
