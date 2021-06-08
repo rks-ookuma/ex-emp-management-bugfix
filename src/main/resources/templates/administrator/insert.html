@@ -59,9 +59,6 @@
 										<label th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}" class="error-messages">
 											メールアドレスを入力してください
 										</label>
-										<label th:if="${duplicationMail}" th:text="${duplicationMail}" class="error-messages">
-											そのメールアドレスを既に登録されています
-										</label>
 										<input type="text" name="mailAddress" id="mailAddress" class="form-control" placeholder="yamada@mail.com"
 											 th:field="*{mailAddress}" th:errorclass="error-input" value="yamada@mail.com">
 									</div>
@@ -79,6 +76,21 @@
 										</label>
 										<input type="password" name="password" id="password" class="form-control" placeholder="password"
 											 th:field="*{password}" th:errorclass="error-input" value="xxxxxxxx">
+									</div>
+								</div>
+							</div>
+							<!-- 確認用パスワード -->
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-12">
+										<label for="passwaord">
+											確認用パスワード:
+										</label>
+										<label th:if="${#fields.hasErrors('checkPassword')}" th:errors="*{checkPassword}" class="error-messages">
+											確認用パスワードを入力してください
+										</label>
+										<input type="password" name="checkPassword" id="checkPassword" class="form-control" placeholder="確認用password"
+											 th:field="*{checkPassword}" th:errorclass="error-input" value="xxxxxxxx">
 									</div>
 								</div>
 							</div>
