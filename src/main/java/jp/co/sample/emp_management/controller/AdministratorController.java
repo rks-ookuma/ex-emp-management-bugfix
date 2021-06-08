@@ -74,8 +74,13 @@ public class AdministratorController {
 	@RequestMapping("/insert")
 	public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
 
+
+		if (!form.getPassword().equals(form.getCheckPassword())) {
+			result.rejectValue("checkPassword", "xxxxx", new Object[] { 50000 }, "パスワードと一致しません");
+
 		if (administratorService.checkDuplicationMail(form.getMailAddress())) {
 			result.rejectValue("mailAddress", "xxxxx", new Object[] { 50000 }, "そのメールアドレスは既に登録されています");
+
 		}
 		if (result.hasErrors()) {
 			return "administrator/insert";
