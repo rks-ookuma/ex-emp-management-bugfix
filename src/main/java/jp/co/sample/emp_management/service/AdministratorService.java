@@ -44,6 +44,10 @@ public class AdministratorService {
 	 */
 	public Administrator login(String mailAddress, String inPassword) {
 		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+		if (administrator == null) {
+			return null;
+		}
+
 		if (encoder.matches(inPassword, administrator.getPassword())) {
 			return administrator;
 		} else {
