@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.sample.emp_management.domain.Employee;
+import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.SerchEmployeeByNameForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
@@ -41,6 +42,11 @@ public class EmployeeController {
 	@ModelAttribute
 	public SerchEmployeeByNameForm setUpSerchEmployeeByNameForm() {
 		return new SerchEmployeeByNameForm();
+	}
+
+	@ModelAttribute
+	public InsertEmployeeForm setupInsertEmployeeForm() {
+		return new InsertEmployeeForm();
 	}
 
 	/////////////////////////////////////////////////////
