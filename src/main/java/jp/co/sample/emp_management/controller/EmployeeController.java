@@ -1,7 +1,9 @@
 package jp.co.sample.emp_management.controller;
 
+import java.io.File;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -124,8 +126,41 @@ public class EmployeeController {
 		return "redirect:/employee/showList";
 	}
 
+	/**
+	 * 従業員登録画面を表示する.
+	 *
+	 * @return 従業員登録画面
+	 */
 	@RequestMapping("/showEmployeeRegister")
 	public String showEmployeeRegister() {
 		return "employee/insert";
+	}
+
+	/**
+	 * 従業員を新規登録する.
+	 *
+	 * @param insertEmployeeForm 従業員を新規登録する際に利用されるフォーム
+	 * @param result             入力値チェックのエラー群
+	 * @return 登録できれば従業員一覧画面、失敗すれば従業員登録画面
+	 */
+	@RequestMapping("/registerEmployee")
+	public String registerEmployee(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result) {
+		if (result.hasErrors()) {
+			return "employee/insert";
+		}
+
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(insertEmployeeForm, employee);
+		employee.setImage(insertEmployeeForm.getImage().getOriginalFilename());
+		try {
+			insertEmployeeForm.getImage().transferTo(new File("../../../../../../resources/static/img"));
+		} catch (Exception e) {
+			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "ファイルのアップロードに失敗しました。もう一度お試しください。");
+			return "employee/insert";
+		}
+		System.out.println("登録成功");
+		System.out.println("employee : " + employee);
+
+		return "redirect:/employee/showList";
 	}
 }
