@@ -227,13 +227,14 @@
                     url : 'http://zipcoda.net/api',   // リクエスト先のURL（コントローラーのパスなど）
                     dataType : 'jsonp', // 戻ってくるデータの型（APIなどで戻り値の型を調べる）
                     data : {           //リクエストパラメータを設定[送る名前： 値]
-                        zipCode: $('#zipCode').val()
+                        zipcode: $('#zipCode').val()
                     },
                     async : true,
                 }).done(function(data){
                     console.log(data);
                     console.log(JSON.stringify(data));
-                
+					
+					$('#address').val(data.items[0].pref + data.items[0].address);
                     
                 }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
                     alert('エラーが発生しました');
