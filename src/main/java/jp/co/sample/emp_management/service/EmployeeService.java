@@ -23,16 +23,30 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 
 	/**
-	 * 従業員をページング形式で取得する.
+	 * 従業員をページング形式で10件取得する.
 	 *
 	 * @param selectPage 指定したページ
 	 * @return 指定したページにおける従業員が入社日の降順に入ったリスト
 	 */
 	public List<Employee> showList(int selectPage) {
+
 		int displayCount = 10;
-		int startIndex = selectPage * displayCount;
-		List<Employee> employeeList = employeeRepository.findLimited(startIndex, displayCount);
+		// startIndexの次から取得する
+		// 1が指定されたらstartIndexは０、2が指定されたらStartIndexは10から
+		int startIndex = selectPage * displayCount - displayCount;
+		List<Employee> employeeList = employeeRepository.findLimited(startIndex);
 		return employeeList;
+	}
+
+	/**
+	 * ページの上限を取得する.
+	 *
+	 * @return ページの上限
+	 */
+	public Integer getPageLimit() {
+		List<Employee> employeeList = employeeRepository.findAll();
+		int pageLimit = (int) Math.ceil(employeeList.size() / 10.0);
+		return pageLimit;
 	}
 
 	/**

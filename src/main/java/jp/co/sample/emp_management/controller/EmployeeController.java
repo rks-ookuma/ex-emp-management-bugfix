@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.sample.emp_management.domain.Employee;
-import jp.co.sample.emp_management.form.EmployeePageForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
 
@@ -27,13 +26,6 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
-
-	@ModelAttribute
-	public EmployeePageForm setupEmployeePageForm() {
-		EmployeePageForm employeePageForm = new EmployeePageForm();
-		employeePageForm.setSelectPage("1");
-		return employeePageForm;
-	}
 
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -55,9 +47,18 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model, EmployeePageForm form) {
-		List<Employee> employeeList = employeeService.showList(Integer.parseInt(form.getSelectPage()));
+	public String showList(Model model, Integer selectPage) {
+		if (selectPage == null) {
+			selectPage = 1;
+		}
+
+		List<Employee> employeeList = employeeService.showList(selectPage);
 		model.addAttribute("employeeList", employeeList);
+		model.addAttribute("selectPage", selectPage);
+
+		int pageLimit = employeeService.getPageLimit();
+		model.addAttribute("pageLimit", pageLimit);
+
 		return "employee/list";
 	}
 

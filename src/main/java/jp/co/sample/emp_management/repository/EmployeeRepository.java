@@ -59,17 +59,15 @@ public class EmployeeRepository {
 	}
 
 	/**
-	 * 取得件数の制限付きで従業員一覧を取得する.
+	 * 10件の制限付きで従業員一覧を取得する.
 	 *
-	 * @param startIndex 指定した番号から取得する
-	 * @param getCount   取得する件数
+	 * @param startIndex 指定した番号の次から取得する
 	 * @return 指定した番号から指定した件数分、入社日の降順で並んだ従業員のリスト
 	 */
-	public List<Employee> findLimited(int startIndex, int getCount) {
+	public List<Employee> findLimited(int startIndex) {
 		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees"
-				+ " ORDER BY hire_date DESC LIMIT :getCount OFFSET :startIndex";
-		SqlParameterSource param = new MapSqlParameterSource().addValue("getCount", getCount).addValue("startIndex",
-				startIndex);
+				+ " ORDER BY hire_date DESC LIMIT 10 OFFSET :startIndex";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("startIndex", startIndex);
 		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 
 		return employeeList;

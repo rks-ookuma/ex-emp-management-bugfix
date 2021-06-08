@@ -9,13 +9,13 @@ package jp.co.sample.emp_management.form;
 public class EmployeePageForm {
 
 	/** 移動したい指定されたページ */
-	private String selectPage;
+	private Integer selectPage;
 
-	public String getSelectPage() {
+	public Integer getSelectPage() {
 		return selectPage;
 	}
 
-	public void setSelectPage(String selectPage) {
+	public void setSelectPage(Integer selectPage) {
 		this.selectPage = selectPage;
 	}
 
