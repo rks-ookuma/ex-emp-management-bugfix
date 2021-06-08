@@ -53,42 +53,30 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model, Integer selectPage) {
+	public String showList(Model model, Integer selectPage, SerchEmployeeByNameForm serchEmployeeByNameForm) {
+		System.out.println("serchName : " + serchEmployeeByNameForm.getSerchName());
 		if (selectPage == null) {
 			selectPage = 1;
 		}
 
-		List<Employee> employeeList = employeeService.showList(selectPage);
-		model.addAttribute("employeeList", employeeList);
-		model.addAttribute("selectPage", selectPage);
-
-		int pageLimit = employeeService.getPageLimit();
-		model.addAttribute("pageLimit", pageLimit);
-		System.out.println("showlist : " + employeeList);
-		return "employee/list";
-	}
-
-	/**
-	 * 名前で曖昧検索した従業員を表示する.
-	 *
-	 * @param form  従業員を名前で曖昧検索する際に利用されるフォーム
-	 * @param model リクエストスコープ
-	 * @return 検索にヒットした従業員のリストが表示された従業員一覧画面、空もしくはヒットしなかった場合全件が表示された従業員一覧画面
-	 */
-	@RequestMapping("/serchEmployeeByName")
-	public String serchEmployeeByName(SerchEmployeeByNameForm form, Model model) {
-		if (form.getSerchName() == null) {
-			return "forward:/employee/showList";
+		int pageLimit = 0;
+		if (serchEmployeeByNameForm.getSerchName() == null) {
+			pageLimit = employeeService.getPageLimit();
+		} else {
+			pageLimit = employeeService.getPageLimit(serchEmployeeByNameForm.getSerchName());
 		}
-		List<Employee> employeeList = employeeService.showEmployeeByName(form.getSerchName());
+
+		List<Employee> employeeList = employeeService.showList(selectPage, serchEmployeeByNameForm.getSerchName());
 		if (employeeList.size() == 0) {
 			model.addAttribute("notExistEmployee", "検索結果が１件もありませんでした");
-			return "forward:/employee/showList";
+			employeeList = employeeService.showList(selectPage, null);
+			pageLimit = employeeService.getPageLimit();
 		}
-
 		model.addAttribute("employeeList", employeeList);
-		System.out.println("serchEmp :" + employeeList);
+		model.addAttribute("selectPage", selectPage);
+		model.addAttribute("pageLimit", pageLimit);
 
+		System.out.println("showlist : " + employeeList);
 		return "employee/list";
 	}
 

@@ -64,7 +64,7 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 			<div>
-				<form action="list.html" th:action="@{/employee/serchEmployeeByName}" method="POST" th:object="${serchEmployeeByNameForm}">
+				<form action="list.html" th:action="@{/employee/showList}" method="POST" th:object="${serchEmployeeByNameForm}">
 					<input type="text" name="serchName" th:field="*{serchName}" placeholder="検索したい従業員名"><button>検索</button>
 				</form>
 				<span th:if="${notExistEmployee}" th:text="${notExistEmployee}">検索結果が１件もありませんでした</span>

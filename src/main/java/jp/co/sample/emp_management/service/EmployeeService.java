@@ -26,16 +26,22 @@ public class EmployeeService {
 	 * 従業員をページング形式で10件取得する.
 	 *
 	 * @param selectPage 指定したページ
+	 * @param inName     曖昧検索したい名前、名前検索でなかったときはnull
 	 * @return 指定したページにおける従業員が入社日の降順に入ったリスト
 	 */
-	public List<Employee> showList(int selectPage) {
+	public List<Employee> showList(int selectPage, String inName) {
 
 		int displayCount = 10;
 		// startIndexの次から取得する
 		// 1が指定されたらstartIndexは０、2が指定されたらStartIndexは10から
 		int startIndex = selectPage * displayCount - displayCount;
-		List<Employee> employeeList = employeeRepository.findLimited(startIndex);
-		return employeeList;
+
+		if (inName == null) {
+			return employeeRepository.findLimited(startIndex);
+		} else {
+			return employeeRepository.findLimitedByLikeName(inName, startIndex);
+		}
+
 	}
 
 	/**
@@ -47,6 +53,19 @@ public class EmployeeService {
 		List<Employee> employeeList = employeeRepository.findAll();
 		int pageLimit = (int) Math.ceil(employeeList.size() / 10.0);
 		return pageLimit;
+	}
+
+	/**
+	 * 曖昧検索した際のページの上限を取得する.
+	 *
+	 * @param inName 検索したい入力された名前
+	 * @return 指定した名前で曖昧検索した際のページの上限
+	 */
+	public Integer getPageLimit(String inName) {
+		List<Employee> employeeList = employeeRepository.findByLikeName(inName);
+		int pageLimit = (int) Math.ceil(employeeList.size() / 10.0);
+		return pageLimit;
+
 	}
 
 	/**
@@ -70,13 +89,4 @@ public class EmployeeService {
 		employeeRepository.update(employee);
 	}
 
-	/**
-	 * 従業員を名前で曖昧検索する.
-	 *
-	 * @param inName 検索したい入力された名前
-	 * @return 指定した文字が含まれている従業員のリスト
-	 */
-	public List<Employee> showEmployeeByName(String inName) {
-		return employeeRepository.findByLikeName(inName);
-	}
 }
