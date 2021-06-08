@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,19 @@ public class EmployeeService {
 	 */
 	public List<Employee> showEmployeeByName(String inName) {
 		return employeeRepository.findByLikeName(inName);
+	}
+
+	/**
+	 * 全従業員の名前だけを取得する.
+	 *
+	 * @return 全従業員の名前が入ったリスト
+	 */
+	public List<String> getEmployeeNameList() {
+		List<Employee> employeeList = employeeRepository.findAll();
+		List<String> employeeNameList = new ArrayList<>();
+		for (Employee employee : employeeList) {
+			employeeNameList.add(employee.getName());
+		}
+		return employeeNameList;
 	}
 }
