@@ -141,7 +141,7 @@
                                         郵便番号を入力してください
                                     </label>
                                     <label class="control-label" style="color: red" for="zipCode"></label>
-                                    <input type="number" name="zipCode" th:field="*{zipCode}" class="form-control" placeholder="1112222(ハイフンなし)"><button type="button" id="zipCodeBtn">住所取得</button>
+                                    <input type="number" name="zipCode" th:field="*{zipCode}" class="form-control" id="zipCode" placeholder="1112222(ハイフンなし)"><button type="button" id="zipCodeBtn">住所取得</button>
 							    </td>
 							  </tr>
 							  <tr>
@@ -220,5 +220,29 @@
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="../../static/js/bootstrap.min.js"></script>
+    <script>
+        $(function(){
+            $('#zipCodeBtn').on('click',function(){
+                $.ajax({
+                    url : 'http://zipcoda.net/api',   // リクエスト先のURL（コントローラーのパスなど）
+                    dataType : 'jsonp', // 戻ってくるデータの型（APIなどで戻り値の型を調べる）
+                    data : {           //リクエストパラメータを設定[送る名前： 値]
+                        zipCode: $('#zipCode').val()
+                    },
+                    async : true,
+                }).done(function(data){
+                    console.log(data);
+                    console.log(JSON.stringify(data));
+                
+                    
+                }).fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert('エラーが発生しました');
+                    console.log('XMLHttpRequest : ' + XMLHttpRequest.status);
+                    console.log('textStatus : ' + textStatus);
+                    console.log('errorTrown : ' + errorThrown.message);
+            });
+            })
+        })
+    </script>
 </body>
 </html>
