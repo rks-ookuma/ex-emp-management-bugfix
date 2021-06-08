@@ -40,7 +40,7 @@ public class AdministratorRepository {
 	 * 主キーから管理者情報を取得します.
 	 * 
 	 * @param id ID
-	 * @return 管理者情報 
+	 * @return 管理者情報
 	 * @throws org.springframework.dao.DataAccessException 存在しない場合は例外を発生します
 	 */
 	public Administrator load(Integer id) {
@@ -49,7 +49,7 @@ public class AdministratorRepository {
 		Administrator administrator = template.queryForObject(sql, param, ADMINISTRATOR_ROW_MAPPER);
 		return administrator;
 	}
-	
+
 	/**
 	 * メールアドレスとパスワードから管理者情報を取得します.
 	 * 
@@ -58,8 +58,9 @@ public class AdministratorRepository {
 	 * @return 管理者情報 存在しない場合はnullを返します
 	 */
 	public Administrator findByMailAddressAndPassward(String mailAddress, String password) {
-		String sql = "select id,name,mail_address,password from administrators where mail_address= '" + mailAddress + "' and password='" + password + "'";
-		SqlParameterSource param = new MapSqlParameterSource();
+		String sql = "select id,name,mail_address,password from administrators where mail_address=:mailAddress and password=:password ";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password",
+				password);
 		List<Administrator> administratorList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
 		if (administratorList.size() == 0) {
 			return null;
