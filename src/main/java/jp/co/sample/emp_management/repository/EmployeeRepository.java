@@ -100,4 +100,17 @@ public class EmployeeRepository {
 		template.update(updateSql, param);
 	}
 
+	/**
+	 * 従業員を名前で曖昧検索する.
+	 *
+	 * @param name 検索したい名前
+	 * @return 指定した名前が含まれる従業員のリスト
+	 */
+	public List<Employee> findByLikeName(String name) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees "
+				+ " WHERE name LIKE :name;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employeeList;
+	}
 }

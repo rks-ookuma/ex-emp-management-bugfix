@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.sample.emp_management.domain.Employee;
+import jp.co.sample.emp_management.form.SerchEmployeeByNameForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
 
@@ -37,6 +38,11 @@ public class EmployeeController {
 		return new UpdateEmployeeForm();
 	}
 
+	@ModelAttribute
+	public SerchEmployeeByNameForm setUpSerchEmployeeByNameForm() {
+		return new SerchEmployeeByNameForm();
+	}
+
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
@@ -58,6 +64,30 @@ public class EmployeeController {
 
 		int pageLimit = employeeService.getPageLimit();
 		model.addAttribute("pageLimit", pageLimit);
+		System.out.println("showlist : " + employeeList);
+		return "employee/list";
+	}
+
+	/**
+	 * 名前で曖昧検索した従業員を表示する.
+	 *
+	 * @param form  従業員を名前で曖昧検索する際に利用されるフォーム
+	 * @param model リクエストスコープ
+	 * @return 検索にヒットした従業員のリストが表示された従業員一覧画面、空もしくはヒットしなかった場合全件が表示された従業員一覧画面
+	 */
+	@RequestMapping("/serchEmployeeByName")
+	public String serchEmployeeByName(SerchEmployeeByNameForm form, Model model) {
+		if (form.getSerchName() == null) {
+			return "forward:/employee/showList";
+		}
+		List<Employee> employeeList = employeeService.showEmployeeByName(form.getSerchName());
+		if (employeeList.size() == 0) {
+			model.addAttribute("notExistEmployee", "検索結果が１件もありませんでした");
+			return "forward:/employee/showList";
+		}
+
+		model.addAttribute("employeeList", employeeList);
+		System.out.println("serchEmp :" + employeeList);
 
 		return "employee/list";
 	}
