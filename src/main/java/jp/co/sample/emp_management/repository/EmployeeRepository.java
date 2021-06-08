@@ -59,6 +59,21 @@ public class EmployeeRepository {
 	}
 
 	/**
+	 * 10件の制限付きで従業員一覧を取得する.
+	 *
+	 * @param startIndex 指定した番号の次から取得する
+	 * @return 指定した番号から指定した件数分、入社日の降順で並んだ従業員のリスト
+	 */
+	public List<Employee> findLimited(int startIndex) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees"
+				+ " ORDER BY hire_date DESC LIMIT 10 OFFSET :startIndex";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("startIndex", startIndex);
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+
+		return employeeList;
+	}
+
+	/**
 	 * 主キーから従業員情報を取得します.
 	 * 
 	 * @param id 検索したい従業員ID
@@ -86,16 +101,33 @@ public class EmployeeRepository {
 	}
 
 	/**
-	 * 従業員を名前で曖昧検索する.
+	 * 従業員を名前で10件分曖昧検索する.
+	 *
+	 * @param name       検索したい名前
+	 * @param startIndex 取得を開始する番号の前の番号
+	 * @return 指定した名前が含まれる従業員のリスト
+	 */
+	public List<Employee> findLimitedByLikeName(String name, int startIndex) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees "
+				+ " WHERE name LIKE :name ORDER BY hire_date DESC LIMIT 10 OFFSET :startIndex;";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%").addValue("startIndex",
+				startIndex);
+		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+		return employeeList;
+	}
+
+	/**
+	 * 従業員を名前であいまい検索する.
 	 *
 	 * @param name 検索したい名前
-	 * @return 指定した名前が含まれる従業員のリスト
+	 * @return 指定した名前が含まれる従業員全員が入ったリスト
 	 */
 	public List<Employee> findByLikeName(String name) {
 		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees "
-				+ " WHERE name LIKE :name;";
+				+ " WHERE name LIKE :name ORDER BY hire_date DESC";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + name + "%");
 		List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
 		return employeeList;
+
 	}
 }
