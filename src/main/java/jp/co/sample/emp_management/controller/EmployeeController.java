@@ -123,4 +123,9 @@ public class EmployeeController {
 		employeeService.update(employee);
 		return "redirect:/employee/showList";
 	}
+
+	@RequestMapping("/showEmployeeRegister")
+	public String showEmployeeRegister() {
+		return "employee/insert";
+	}
 }
