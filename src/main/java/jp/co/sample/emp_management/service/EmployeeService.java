@@ -24,13 +24,49 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 
 	/**
-	 * 従業員情報を全件取得します.
-	 * 
-	 * @return 従業員情報一覧
+	 * 従業員をページング形式で10件取得する.
+	 *
+	 * @param selectPage 指定したページ
+	 * @param inName     曖昧検索したい名前、名前検索でなかったときはnull
+	 * @return 指定したページにおける従業員が入社日の降順に入ったリスト
 	 */
-	public List<Employee> showList() {
+	public List<Employee> showList(int selectPage, String inName) {
+
+		int displayCount = 10;
+		// startIndexの次から取得する
+		// 1が指定されたらstartIndexは０、2が指定されたらStartIndexは10から
+		int startIndex = selectPage * displayCount - displayCount;
+
+		if (inName == null) {
+			return employeeRepository.findLimited(startIndex);
+		} else {
+			return employeeRepository.findLimitedByLikeName(inName, startIndex);
+		}
+
+	}
+
+	/**
+	 * ページの上限を取得する.
+	 *
+	 * @return ページの上限
+	 */
+	public Integer getPageLimit() {
 		List<Employee> employeeList = employeeRepository.findAll();
-		return employeeList;
+		int pageLimit = (int) Math.ceil(employeeList.size() / 10.0);
+		return pageLimit;
+	}
+
+	/**
+	 * 曖昧検索した際のページの上限を取得する.
+	 *
+	 * @param inName 検索したい入力された名前
+	 * @return 指定した名前で曖昧検索した際のページの上限
+	 */
+	public Integer getPageLimit(String inName) {
+		List<Employee> employeeList = employeeRepository.findByLikeName(inName);
+		int pageLimit = (int) Math.ceil(employeeList.size() / 10.0);
+		return pageLimit;
+
 	}
 
 	/**
