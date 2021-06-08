@@ -56,6 +56,7 @@ public class EmployeeController {
 	public String showList(Model model) {
 		List<Employee> employeeList = employeeService.showList();
 		model.addAttribute("employeeList", employeeList);
+		System.out.println("showlist : " + employeeList);
 		return "employee/list";
 	}
 
@@ -69,15 +70,16 @@ public class EmployeeController {
 	@RequestMapping("/serchEmployeeByName")
 	public String serchEmployeeByName(SerchEmployeeByNameForm form, Model model) {
 		if (form.getSerchName() == null) {
-			showList(model);
+			return "forward:/employee/showList";
 		}
 		List<Employee> employeeList = employeeService.showEmployeeByName(form.getSerchName());
 		if (employeeList.size() == 0) {
-			model.addAttribute("notExistEmployee", "１件もありませんでした");
-			showList(model);
+			model.addAttribute("notExistEmployee", "検索結果が１件もありませんでした");
+			return "forward:/employee/showList";
 		}
 
 		model.addAttribute("employeeList", employeeList);
+		System.out.println("serchEmp :" + employeeList);
 
 		return "employee/list";
 	}
