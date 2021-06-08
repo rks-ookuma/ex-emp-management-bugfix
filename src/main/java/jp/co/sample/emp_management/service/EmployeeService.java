@@ -60,6 +60,6 @@ public class EmployeeService {
 	 * @return 指定した文字が含まれている従業員のリスト
 	 */
 	public List<Employee> showEmployeeByName(String inName) {
-		return employeeRepository.findByName(inName);
+		return employeeRepository.findByLikeName(inName);
 	}
 }
