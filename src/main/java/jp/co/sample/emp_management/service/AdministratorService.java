@@ -31,6 +31,7 @@ public class AdministratorService {
 	 */
 	public void insert(Administrator administrator) {
 		administrator.setPassword(encoder.encode(administrator.getPassword()));
+		System.out.println(administrator.getPassword());
 		administratorRepository.insert(administrator);
 	}
 
@@ -41,10 +42,13 @@ public class AdministratorService {
 	 * @param password    パスワード
 	 * @return 管理者情報 存在しない場合はnullが返ります
 	 */
-	public Administrator login(String mailAddress, String password) {
-		String hashPassword = encoder.encode("password");
-		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, hashPassword);
-		return administrator;
+	public Administrator login(String mailAddress, String inPassword) {
+		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+		if (encoder.matches(inPassword, administrator.getPassword())) {
+			return administrator;
+		} else {
+			return null;
+		}
 	}
 
 	/**
