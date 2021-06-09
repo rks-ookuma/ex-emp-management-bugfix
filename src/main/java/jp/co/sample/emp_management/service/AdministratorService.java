@@ -1,6 +1,9 @@
 package jp.co.sample.emp_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +19,7 @@ import jp.co.sample.emp_management.repository.AdministratorRepository;
  */
 @Service
 @Transactional
-public class AdministratorService {
+public class AdministratorService implements UserDetailsService {
 
 	@Autowired
 	private AdministratorRepository administratorRepository;
@@ -68,5 +71,18 @@ public class AdministratorService {
 		}
 
 		return true;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String mailAddress) throws UsernameNotFoundException {
+		if (mailAddress == null || "".equals(mailAddress)) {
+			throw new UsernameNotFoundException("メールアドレスが空です");
+		}
+		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+		if (administrator == null) {
+			throw new UsernameNotFoundException("アカウントがDBに存在しません");
+		}
+
+		return administrator;
 	}
 }
