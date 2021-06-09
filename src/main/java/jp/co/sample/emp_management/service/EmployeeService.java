@@ -89,4 +89,15 @@ public class EmployeeService {
 		employeeRepository.update(employee);
 	}
 
+	/**
+	 * 従業員を新規登録する.
+	 *
+	 * @param employee 登録したい従業員ドメイン
+	 */
+	public void register(Employee employee) {
+		employee.setId(employeeRepository.getMaxId() + 1);
+		employeeRepository.insert(employee);
+		System.out.println(employee);
+	}
+
 }

@@ -160,15 +160,14 @@ public class EmployeeController {
 		try {
 			Files.copy(insertEmployeeForm.getImage().getInputStream(),
 					Paths.get(path, insertEmployeeForm.getImage().getOriginalFilename()));
-			// insertEmployeeForm.getImage().transferTo(new
-			// File("../../../../../../resources/static/img/" + employee.getImage()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "ファイルのアップロードに失敗しました。もう一度お試しください。");
 			return "employee/insert";
 		}
+
+		employeeService.register(employee);
 		System.out.println("登録成功");
-		System.out.println("employee : " + employee);
 
 		return "redirect:/employee/showList";
 	}
