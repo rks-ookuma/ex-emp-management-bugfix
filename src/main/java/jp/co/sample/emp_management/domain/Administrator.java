@@ -40,8 +40,9 @@ public class Administrator implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		System.out.println("ドメインのgetAutorities");
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority(authority.toString()));
+		authorities.add(new SimpleGrantedAuthority("ADMIN"));
 		return authorities;
 	}
 

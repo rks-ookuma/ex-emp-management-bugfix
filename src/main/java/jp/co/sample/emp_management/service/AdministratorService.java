@@ -82,7 +82,7 @@ public class AdministratorService implements UserDetailsService {
 		if (administrator == null) {
 			throw new UsernameNotFoundException("アカウントがDBに存在しません");
 		}
-
+		System.out.println("ServiceのloadUser");
 		return administrator;
 	}
 }

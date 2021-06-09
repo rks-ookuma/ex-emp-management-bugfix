@@ -1,14 +1,14 @@
-package jp.co.sample.emp_management.common;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-@Configuration
-public class CreateBeanConfig {
-
-	@Bean
-	public BCryptPasswordEncoder getBCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-}
+//package jp.co.sample.emp_management.common;
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//
+//@Configuration
+//public class CreateBeanConfig {
+//
+//	@Bean
+//	public BCryptPasswordEncoder getBCryptPasswordEncoder() {
+//		return new BCryptPasswordEncoder();
+//	}
+//}
