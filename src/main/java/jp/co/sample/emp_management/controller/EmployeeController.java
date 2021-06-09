@@ -162,7 +162,6 @@ public class EmployeeController {
 
 		String path = EmployeeController.class.getResource("/static").getFile() + "/img";
 		path = path.substring(1);
-		System.out.println(path);
 		try {
 			Files.copy(insertEmployeeForm.getImage().getInputStream(),
 					Paths.get(path, insertEmployeeForm.getImage().getOriginalFilename()));
@@ -173,7 +172,6 @@ public class EmployeeController {
 		}
 
 		employeeService.register(employee);
-		System.out.println("登録成功");
 
 		return "redirect:/employee/showList";
 	}

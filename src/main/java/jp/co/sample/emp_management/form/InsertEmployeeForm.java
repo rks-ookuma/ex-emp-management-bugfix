@@ -25,7 +25,7 @@ public class InsertEmployeeForm {
 	@NotEmpty(message = "性別を選択してください")
 	private String gender;
 	/** 入社日 */
-	@Pattern(regexp = "^[0-9] {4}-[0-9] {2}-[0-9] {2}$", message = "入社日を選択してください")
+	@Pattern(regexp = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$", message = "入社日を選択してください")
 	private String hireDate;
 	/** メールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
