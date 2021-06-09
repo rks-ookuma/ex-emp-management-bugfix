@@ -3,6 +3,7 @@ package jp.co.sample.emp_management.form;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -19,26 +20,24 @@ public class InsertEmployeeForm {
 	@NotBlank(message = "名前を入力してください")
 	private String name;
 	/** 画像 */
-	@NotNull(message = "画像を選択してください")
 	private MultipartFile image;
 	/** 性別 */
 	@NotEmpty(message = "性別を選択してください")
 	private String gender;
 	/** 入社日 */
-	@NotNull(message = "入社日を選択してください")
+	@Pattern(regexp = "^[0-9] {4}-[0-9] {2}-[0-9] {2}$", message = "入社日を選択してください")
 	private String hireDate;
 	/** メールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
 	private String mailAddress;
 	/** 郵便番号 */
-	@NotNull(message = "郵便番号を入力してください")
-	@Size(max = 7, message = "xxxxxxxの形式で入力してください")
+	@Size(min = 1, max = 7, message = "郵便番号をハイフンなしの７桁で入力してください")
 	private String zipCode;
 	/** 住所 */
 	@NotBlank(message = "住所を入力してください")
 	private String address;
 	/** 電話番号 */
-	@NotNull(message = "電話番号を入力してください")
+	@Size(min = 1, message = "電話番号を入力してください")
 	private String telephone;
 	/** 給料 */
 	@NotNull(message = "給料を入力してください")

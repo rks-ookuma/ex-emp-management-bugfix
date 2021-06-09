@@ -145,6 +145,9 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/registerEmployee")
 	public String registerEmployee(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result) {
+		if (insertEmployeeForm.getImage().getSize() == 0) {
+			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "画像を選択してください");
+		}
 		if (result.hasErrors()) {
 			return "employee/insert";
 		}
