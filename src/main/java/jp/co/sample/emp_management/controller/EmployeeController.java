@@ -151,7 +151,6 @@ public class EmployeeController {
 		if (insertEmployeeForm.getImage().getSize() == 0) {
 			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "画像を選択してください");
 		}
-		System.out.println(insertEmployeeForm.getHireDate());
 		if (result.hasErrors()) {
 			return "employee/insert";
 		}
@@ -163,7 +162,6 @@ public class EmployeeController {
 
 		String path = EmployeeController.class.getResource("/static").getFile() + "/img";
 		path = path.substring(1);
-		System.out.println(path);
 		try {
 			Files.copy(insertEmployeeForm.getImage().getInputStream(),
 					Paths.get(path, insertEmployeeForm.getImage().getOriginalFilename()));
@@ -174,7 +172,6 @@ public class EmployeeController {
 		}
 
 		employeeService.register(employee);
-		System.out.println("登録成功");
 
 		return "redirect:/employee/showList";
 	}
