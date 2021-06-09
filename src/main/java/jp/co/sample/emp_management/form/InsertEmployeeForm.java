@@ -1,7 +1,5 @@
 package jp.co.sample.emp_management.form;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,7 +26,7 @@ public class InsertEmployeeForm {
 	private String gender;
 	/** 入社日 */
 	@NotNull(message = "入社日を選択してください")
-	private Date hireDate;
+	private String hireDate;
 	/** メールアドレス */
 	@NotBlank(message = "メールアドレスを入力してください")
 	private String mailAddress;
@@ -76,11 +74,11 @@ public class InsertEmployeeForm {
 		this.gender = gender;
 	}
 
-	public Date getHireDate() {
+	public String getHireDate() {
 		return hireDate;
 	}
 
-	public void setHireDate(Date hireDate) {
+	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
 	}
 

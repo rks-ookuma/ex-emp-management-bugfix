@@ -1,6 +1,8 @@
 package jp.co.sample.emp_management.controller;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -62,7 +64,6 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(Model model, Integer selectPage, SerchEmployeeByNameForm serchEmployeeByNameForm) {
-		System.out.println("serchName : " + serchEmployeeByNameForm.getSerchName());
 		if (selectPage == null) {
 			selectPage = 1;
 		}
@@ -84,7 +85,6 @@ public class EmployeeController {
 		model.addAttribute("selectPage", selectPage);
 		model.addAttribute("pageLimit", pageLimit);
 
-		System.out.println("showlist : " + employeeList);
 		return "employee/list";
 	}
 
@@ -151,10 +151,19 @@ public class EmployeeController {
 
 		Employee employee = new Employee();
 		BeanUtils.copyProperties(insertEmployeeForm, employee);
+		employee.setHireDate(Date.valueOf(insertEmployeeForm.getHireDate()));
 		employee.setImage(insertEmployeeForm.getImage().getOriginalFilename());
+
+		String path = EmployeeController.class.getResource("/static").getFile() + "/img";
+		path = path.substring(1);
+		System.out.println(path);
 		try {
-			insertEmployeeForm.getImage().transferTo(new File("../../../../../../resources/static/img"));
+			Files.copy(insertEmployeeForm.getImage().getInputStream(),
+					Paths.get(path, insertEmployeeForm.getImage().getOriginalFilename()));
+			// insertEmployeeForm.getImage().transferTo(new
+			// File("../../../../../../resources/static/img/" + employee.getImage()));
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "ファイルのアップロードに失敗しました。もう一度お試しください。");
 			return "employee/insert";
 		}
