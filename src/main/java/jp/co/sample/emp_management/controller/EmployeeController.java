@@ -1,7 +1,11 @@
 package jp.co.sample.emp_management.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Employee;
+import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.SerchEmployeeByNameForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
@@ -45,6 +50,11 @@ public class EmployeeController {
 		return new SerchEmployeeByNameForm();
 	}
 
+	@ModelAttribute
+	public InsertEmployeeForm setupInsertEmployeeForm() {
+		return new InsertEmployeeForm();
+	}
+
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員一覧を表示する
 	/////////////////////////////////////////////////////
@@ -56,7 +66,6 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(Model model, Integer selectPage, SerchEmployeeByNameForm serchEmployeeByNameForm) {
-		System.out.println("serchName : " + serchEmployeeByNameForm.getSerchName());
 		if (selectPage == null) {
 			selectPage = 1;
 		}
@@ -78,7 +87,6 @@ public class EmployeeController {
 		model.addAttribute("selectPage", selectPage);
 		model.addAttribute("pageLimit", pageLimit);
 
-		System.out.println("showlist : " + employeeList);
 		return "employee/list";
 	}
 
@@ -121,6 +129,56 @@ public class EmployeeController {
 	}
 
 	/**
+	 * 従業員登録画面を表示する.
+	 *
+	 * @return 従業員登録画面
+	 */
+	@RequestMapping("/showEmployeeRegister")
+	public String showEmployeeRegister() {
+		return "employee/insert";
+	}
+
+	/**
+	 * 従業員を新規登録する.
+	 *
+	 * @param insertEmployeeForm 従業員を新規登録する際に利用されるフォーム
+	 * @param result             入力値チェックのエラー群
+	 * @return 登録できれば従業員一覧画面、失敗すれば従業員登録画面
+	 */
+	@RequestMapping("/registerEmployee")
+	synchronized public String registerEmployee(@Validated InsertEmployeeForm insertEmployeeForm,
+			BindingResult result) {
+		if (insertEmployeeForm.getImage().getSize() == 0) {
+			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "画像を選択してください");
+		}
+		if (result.hasErrors()) {
+			return "employee/insert";
+		}
+
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(insertEmployeeForm, employee);
+		employee.setHireDate(Date.valueOf(insertEmployeeForm.getHireDate()));
+		employee.setImage(insertEmployeeForm.getImage().getOriginalFilename());
+
+		String path = EmployeeController.class.getResource("/static").getFile() + "/img";
+		path = path.substring(1);
+		System.out.println(path);
+		try {
+			Files.copy(insertEmployeeForm.getImage().getInputStream(),
+					Paths.get(path, insertEmployeeForm.getImage().getOriginalFilename()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "ファイルのアップロードに失敗しました。もう一度お試しください。");
+			return "employee/insert";
+		}
+
+		employeeService.register(employee);
+		System.out.println("登録成功");
+
+		return "redirect:/employee/showList";
+	}
+
+	/*
 	 * 従業員の名前のリストをJSON形式で返す.
 	 *
 	 * @return 従業員の名前のリスト（JSON形式）

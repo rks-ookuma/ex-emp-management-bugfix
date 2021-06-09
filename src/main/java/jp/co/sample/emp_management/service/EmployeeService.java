@@ -91,9 +91,21 @@ public class EmployeeService {
 	}
 
 	/**
+	 * 従業員を新規登録する.
+	 *
+	 * @param employee 登録したい従業員ドメイン
+	 */
+	public void register(Employee employee) {
+		employee.setId(employeeRepository.getMaxId() + 1);
+		employeeRepository.insert(employee);
+		System.out.println(employee);
+	}
+
+	/*
 	 * 従業員を名前で曖昧検索する.
 	 *
 	 * @param inName 検索したい入力された名前
+	 * 
 	 * @return 指定した文字が含まれている従業員のリスト
 	 */
 	public List<Employee> showEmployeeByName(String inName) {
