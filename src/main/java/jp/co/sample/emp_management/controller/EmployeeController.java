@@ -151,6 +151,7 @@ public class EmployeeController {
 		if (insertEmployeeForm.getImage().getSize() == 0) {
 			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "画像を選択してください");
 		}
+		System.out.println(insertEmployeeForm.getHireDate());
 		if (result.hasErrors()) {
 			return "employee/insert";
 		}
