@@ -146,7 +146,8 @@ public class EmployeeController {
 	 * @return 登録できれば従業員一覧画面、失敗すれば従業員登録画面
 	 */
 	@RequestMapping("/registerEmployee")
-	public String registerEmployee(@Validated InsertEmployeeForm insertEmployeeForm, BindingResult result) {
+	synchronized public String registerEmployee(@Validated InsertEmployeeForm insertEmployeeForm,
+			BindingResult result) {
 		if (insertEmployeeForm.getImage().getSize() == 0) {
 			result.rejectValue("image", "xxxxx", new Object[] { 50000 }, "画像を選択してください");
 		}
