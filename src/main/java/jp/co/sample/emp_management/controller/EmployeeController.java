@@ -13,12 +13,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.InsertEmployeeForm;
 import jp.co.sample.emp_management.form.SerchEmployeeByNameForm;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
 import jp.co.sample.emp_management.service.EmployeeService;
+import net.arnx.jsonic.JSON;
 
 /**
  * 従業員情報を操作するコントローラー.
@@ -173,5 +175,17 @@ public class EmployeeController {
 		System.out.println("登録成功");
 
 		return "redirect:/employee/showList";
+	}
+
+	/*
+	 * 従業員の名前のリストをJSON形式で返す.
+	 *
+	 * @return 従業員の名前のリスト（JSON形式）
+	 */
+	@ResponseBody
+	@RequestMapping("/getAutoCompleteEmployeeList")
+	public String getAutoCompleteEmployeeList() {
+		List<String> employeeNameList = employeeService.getEmployeeNameList();
+		return JSON.encode(employeeNameList);
 	}
 }
