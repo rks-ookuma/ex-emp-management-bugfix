@@ -38,13 +38,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/") // ログイン画面を表示させるパス、ログインしてないときに認可が必要なページを見る時とかもここにとぶ
 				.loginProcessingUrl("/login") // ログインする処理のパス、ログインボタンのとび先にここを設定する
 				.failureUrl("/?error=true") // ログインが失敗したときにとぶパス（"/"のログインページ＋失敗メッセージを出すための?error=true
-				.defaultSuccessUrl("/employee/showList", false) // 第一引数：ログイン成功時にとぶ先
+				.defaultSuccessUrl("/employee/showList", true) // 第一引数：ログイン成功時にとぶ先
 																// 第二引数をfalseにしておくと、ログインしてなくて見れずログインページにとばされた続きに遷移する
+				// FIXME: 第2引数をfalseにすると、ログイン成功時にたまにstaticのフォルダに行ってしまうバグあり
 				.usernameParameter("mailAddress") // ここに来たusernameとpasswordでSpringが自動でログイン処理をする
 				.passwordParameter("password");
 
 		http.logout() // ログアウトに関する設定
-				.logoutRequestMatcher(new AntPathRequestMatcher("logout")) // このパスが来たらログアウトを自動でしてくれる
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // このパスが来たらログアウトを自動でしてくれる
 				.logoutSuccessUrl("/") // ログアウト後に遷移させるパスを設定⇒今回はログアウト後はログイン画面を表示
 				.deleteCookies("JSESSIONID") // ログアウト後にCookieに保存されているセッションIDを破棄
 				.invalidateHttpSession(true); // trueにしておけば、ログアウト後にセッションを無効にする
