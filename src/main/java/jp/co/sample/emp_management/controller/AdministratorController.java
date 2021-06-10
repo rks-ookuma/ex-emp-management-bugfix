@@ -104,6 +104,7 @@ public class AdministratorController {
 		return "administrator/login";
 	}
 
+	// SpringSecurityが自動で行ってくれるため、必要なし
 //	/**
 //	 * ログインします.
 //	 * 
@@ -126,15 +127,16 @@ public class AdministratorController {
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
-	/**
-	 * ログアウトをします. (SpringSecurityに任せるためコメントアウトしました)
-	 * 
-	 * @return ログイン画面
-	 */
-	@RequestMapping(value = "/logout")
-	public String logout() {
-		session.invalidate();
-		return "redirect:/";
-	}
+	// SpringSecurityが自動で行ってくれるため、必要なし
+//	/**
+//	 * ログアウトをします. (SpringSecurityに任せるためコメントアウトしました)
+//	 * 
+//	 * @return ログイン画面
+//	 */
+//	@RequestMapping(value = "/logout")
+//	public String logout() {
+//		session.invalidate();
+//		return "redirect:/";
+//	}
 
 }
