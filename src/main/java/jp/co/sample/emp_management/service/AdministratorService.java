@@ -1,6 +1,11 @@
 package jp.co.sample.emp_management.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.sample.emp_management.domain.Administrator;
+import jp.co.sample.emp_management.domain.LoginAdministrator;
 import jp.co.sample.emp_management.repository.AdministratorRepository;
 
 /**
@@ -76,13 +82,29 @@ public class AdministratorService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String mailAddress) throws UsernameNotFoundException {
 		if (mailAddress == null || "".equals(mailAddress)) {
-			throw new UsernameNotFoundException("メールアドレスが空です");
+			throw new UsernameNotFoundException("メールアドレスが未入力です");
 		}
 		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
 		if (administrator == null) {
-			throw new UsernameNotFoundException("アカウントがDBに存在しません");
+			throw new UsernameNotFoundException("そのメールアドレスは登録されていません");
 		}
-		System.out.println("ServiceのloadUser");
-		return administrator;
+
+		Collection<GrantedAuthority> authorityList = new ArrayList<>();
+		authorityList.add(new SimpleGrantedAuthority("ROLE_USER")); // 権限を作っている
+
+		return new LoginAdministrator(administrator, authorityList); // 権限と管理者情報で権限付き管理者情報を作り、返している
 	}
+
+//	@Override
+//	public UserDetails loadUserByUsername(String mailAddress) throws UsernameNotFoundException {
+//		if (mailAddress == null || "".equals(mailAddress)) {
+//			throw new UsernameNotFoundException("メールアドレスが空です");
+//		}
+//		Administrator administrator = administratorRepository.findByMailAddress(mailAddress);
+//		if (administrator == null) {
+//			throw new UsernameNotFoundException("アカウントがDBに存在しません");
+//		}
+//		System.out.println("ServiceのloadUser");
+//		return administrator;
+//	}
 }

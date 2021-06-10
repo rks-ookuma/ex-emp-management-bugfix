@@ -1,26 +1,12 @@
 package jp.co.sample.emp_management.domain;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 /**
  * 管理者情報を表すドメイン.
  * 
  * @author igamasayuki
  * 
  */
-public class Administrator implements UserDetails {
-
-	private static final long serialVersionUID = 1L;
-
-	public enum Authority {
-		ROLE_USER, ROLE_ADMIN
-	};
+public class Administrator {
 
 	/** id(主キー) */
 	private Integer id;
@@ -30,41 +16,6 @@ public class Administrator implements UserDetails {
 	private String mailAddress;
 	/** パスワード */
 	private String password;
-
-	private Authority authority;
-
-	@Override
-	public String getUsername() {
-		return this.mailAddress;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		System.out.println("ドメインのgetAutorities");
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		authorities.add(new SimpleGrantedAuthority("ADMIN"));
-		return authorities;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
 
 	/**
 	 * 引数無しのコンストラクタ.
@@ -143,22 +94,10 @@ public class Administrator implements UserDetails {
 		this.password = password;
 	}
 
-	public Authority getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(Authority authority) {
-		this.authority = authority;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	@Override
 	public String toString() {
 		return "Administrator [id=" + id + ", name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
-				+ ", authority=" + authority + "]";
+				+ "]";
 	}
 
 }
