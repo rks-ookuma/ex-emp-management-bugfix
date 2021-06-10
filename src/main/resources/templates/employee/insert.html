@@ -41,7 +41,7 @@
 						<li class="active"><a href="insert.html" th:href="@{/employee/showEmployeeRegister}">従業員登録</a></li>
 					</ul>
 					<p class="navbar-text navbar-right">
-				        <span th:text="${session.administratorName}">山田太郎</span>さんこんにちは！
+				        <span sec:authentication="principal.administrator.name">山田太郎</span>さんこんにちは！
 						&nbsp;&nbsp;&nbsp;
 						<a href="../administrator/login.html" class="navbar-link" th:href="@{/logout}">ログアウト</a>
 					</p>

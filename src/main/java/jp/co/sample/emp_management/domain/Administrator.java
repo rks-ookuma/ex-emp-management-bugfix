@@ -7,6 +7,7 @@ package jp.co.sample.emp_management.domain;
  * 
  */
 public class Administrator {
+
 	/** id(主キー) */
 	private Integer id;
 	/** 名前 */
@@ -25,14 +26,10 @@ public class Administrator {
 	/**
 	 * 初期化用コンストラクタ.
 	 * 
-	 * @param id
-	 *            id(主キー)
-	 * @param name
-	 *            名前
-	 * @param mailAddress
-	 *            メールアドレス
-	 * @param password
-	 *            パスワード
+	 * @param id          id(主キー)
+	 * @param name        名前
+	 * @param mailAddress メールアドレス
+	 * @param password    パスワード
 	 */
 	public Administrator(Integer id, String name, String mailAddress, String password) {
 		this.id = id;
@@ -102,5 +99,5 @@ public class Administrator {
 		return "Administrator [id=" + id + ", name=" + name + ", mailAddress=" + mailAddress + ", password=" + password
 				+ "]";
 	}
-	
+
 }
